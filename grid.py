@@ -1,7 +1,7 @@
-from collections import defaultdict
-
+import pygame
 class Cell:
     def __init__(self, row: int, col: int):
+        self.SIZE = 40
         self.row, self.col = row, col
         self.walls = {'west': True, 'north': True, 'east': True, 'south': True}
         self.neighbors = []
@@ -9,6 +9,8 @@ class Cell:
 
     def print_cell(self):
         print(self.row, self.col)
+    def draw(self):
+        pass
 
 class Grid:
     def __init__(self, num_rows: int, num_cols: int):
@@ -67,3 +69,6 @@ class Grid:
 
     def get_graph(self):
         return self.graph
+    def draw(self):
+        for cell in self.grid:
+            cell.draw()

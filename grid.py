@@ -1,16 +1,14 @@
 import pygame
 class Cell:
     def __init__(self, row: int, col: int):
-        self.SIZE = 40
         self.row, self.col = row, col
-        self.walls = {'west': True, 'north': True, 'east': True, 'south': True}
+        self.walls = {'top': True, 'right': True, 'bottom': True, 'left': True}
         self.neighbors = []
         self.visited = False
 
     def print_cell(self):
         print(self.row, self.col)
-    def draw(self):
-        pass
+
 
 class Grid:
     def __init__(self, num_rows: int, num_cols: int):
@@ -66,7 +64,6 @@ class Grid:
                 value.print_cell()
 
         print(self.graph.items())
-
     def get_graph(self):
         return self.graph
     def draw(self):

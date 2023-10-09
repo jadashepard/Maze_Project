@@ -9,7 +9,6 @@ class Cell:
     def print_cell(self):
         print(self.row, self.col)
 
-
 class Grid:
     def __init__(self, num_rows: int, num_cols: int):
         self.rows = num_rows
@@ -53,8 +52,6 @@ class Grid:
         for cell in self.grid:
             cell.print_cell()
 
-        print(self.grid)
-
     def print_graph(self):
         for key in self.graph:
             print()
@@ -62,10 +59,5 @@ class Grid:
             print("__")
             for value in self.graph[key]:
                 value.print_cell()
-
-        print(self.graph.items())
     def get_graph(self):
         return self.graph
-    def draw(self):
-        for cell in self.grid:
-            cell.draw()

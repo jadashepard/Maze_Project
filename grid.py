@@ -1,10 +1,16 @@
-import pygame
+import random
 class Cell:
     def __init__(self, row: int, col: int):
         self.row, self.col = row, col
         self.walls = {'top': True, 'right': True, 'bottom': True, 'left': True}
         self.neighbors = []
         self.visited = False
+    def check_neighbors(self):
+        unvisited = []
+        for neighbor in self.neighbors:
+            if not neighbor.visited:
+                unvisited.append(neighbor)
+        return unvisited[random.randint(0, len(unvisited) - 1)] if unvisited else False
 
     def print_cell(self):
         print(self.row, self.col)
@@ -13,7 +19,7 @@ class Grid:
     def __init__(self, num_rows: int, num_cols: int):
         self.rows = num_rows
         self.cols = num_cols
-        self.grid = [Cell(row,col) for row in range(self.rows) for col in range(self.cols)]
+        self.grid = [Cell(col,row) for row in range(self.rows) for col in range(self.cols)]
         self.configure_cells()
         self.graph = self.create_graph()
 
@@ -47,17 +53,3 @@ class Grid:
             return False
         #Else, return the neighboring cell which is at the index calculated by the lambda function
         return self.grid[find_index(row,col)]
-
-    def print_grid(self):
-        for cell in self.grid:
-            cell.print_cell()
-
-    def print_graph(self):
-        for key in self.graph:
-            print()
-            key.print_cell()
-            print("__")
-            for value in self.graph[key]:
-                value.print_cell()
-    def get_graph(self):
-        return self.graph

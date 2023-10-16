@@ -10,6 +10,7 @@ class Maze:
         self.grid_size = 10
         self.cell_size = self.RES / self.grid_size
         self.maze = Grid(self.grid_size, self.grid_size)
+        # self.maze.edges_count()
     def draw(self, cell) -> None:
         blue = pygame.Color("#ADD8E6")
         x, y = cell.row * self.cell_size, cell.col * self.cell_size

@@ -43,6 +43,15 @@ class Grid:
                 cell.neighbors.append(bottom)
             if left:
                 cell.neighbors.append(left)
+    #Helper method for algorithm analysis
+    def edges_count(self):
+        vertices = 0
+        edges = 0
+        for cell in self.graph:
+            vertices += 1
+            edges += len(self.graph[cell])
+        print("Number of vertices: " + str(vertices))
+        print("Number of edges: " + str(edges))
 
     #Goal: check_cell returns if the cell we are looking for is our neighbor. 
     #Find index of neighboring cells in 1D list = Cell.row + Cell.col * total number of columns

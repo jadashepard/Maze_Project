@@ -1,7 +1,6 @@
 import pygame
 from grid import Grid
-import PySimpleGUI as sg
-from gui import names
+from gui import names2
 
 
 class Maze:
@@ -13,12 +12,9 @@ class Maze:
         self.dis.fill('ivory')
         self.grid_size = 10
         self.cell_size = self.RES / self.grid_size
-        print (names[0])
- #       val = lst.get()[0]
-     #   int1 = lst.get()
+
         #assign grid size to value selected by user in gui
-      #  lst.DataSource = lst.ToList
-        self.grid_size = int(names[0])
+        self.grid_size = int(names2[0])
         self.maze = Grid(self.grid_size, self.grid_size)
         # self.maze.edges_count()
     def draw(self, cell) -> None:

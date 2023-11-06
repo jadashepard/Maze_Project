@@ -16,7 +16,6 @@ class Maze:
         x, y = cell.row * self.cell_size, cell.col * self.cell_size
         if cell.visited:
             pygame.draw.rect(self.dis, blue, (x, y, self.cell_size, self.cell_size))
-            
         if cell.walls['top']:
             pygame.draw.line(self.dis, pygame.Color('orange'), (x,y), (x + self.cell_size, y), 4)
         if cell.walls['right']:
@@ -55,7 +54,17 @@ if __name__=="__main__":
     current_cell = list(graph.keys())[0]
     stack = []
     count = 1
+
+    kruskals_maze = []
+    for cell in graph:
+        for neighbor in graph[cell]:
+            kruskals_maze.append(neighbor)
+    kruskals_maze = sorted(kruskals_maze, key=lambda item: item[1])
     
+    for cell in kruskals_maze:
+        cell[0].print_cell()
+        print("weight = %d" % cell[1])
+
     #Main game loop
     exit = False
     clock = pygame.time.Clock()

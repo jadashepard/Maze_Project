@@ -3,13 +3,13 @@ class Cell:
     def __init__(self, row: int, col: int):
         self.row, self.col = row, col
         self.walls = {'top': True, 'right': True, 'bottom': True, 'left': True}
-        self.neighbors = []
+        self.neighbors = [] #neighbors is a list of tuples with the format (Cell, weight:int)
         self.visited = False
     def check_neighbors(self):
         unvisited = []
         for neighbor in self.neighbors:
-            if not neighbor.visited:
-                unvisited.append(neighbor)
+            if not neighbor[0].visited:
+                unvisited.append(neighbor[0])
         return unvisited[random.randint(0, len(unvisited) - 1)] if unvisited else False
 
     def print_cell(self):
@@ -35,14 +35,17 @@ class Grid:
             bottom = self.check_cell(cell.row + 1, cell.col)
             right = self.check_cell(cell.row, cell.col + 1)
             top = self.check_cell(cell.row - 1, cell.col)
+            #If the cell is a top, right, bottom, or left neighbor it added to the list as a tuple
+            #with the first index being the cell and the second index being a random integer to act as the weight of the edge
+            #tuple (Cell, weight:int)
             if top:
-                cell.neighbors.append(top)
+                cell.neighbors.append((top, random.randint(1, self.rows * self.cols)))
             if right:
-                cell.neighbors.append(right)
+                cell.neighbors.append((right, random.randint(1, self.rows * self.cols)))
             if bottom:
-                cell.neighbors.append(bottom)
+                cell.neighbors.append((bottom, random.randint(1, self.rows * self.cols)))
             if left:
-                cell.neighbors.append(left)
+                cell.neighbors.append((left, random.randint(1, self.rows * self.cols)))
     #Helper method for algorithm analysis
     def edges_count(self):
         vertices = 0
@@ -62,3 +65,11 @@ class Grid:
             return False
         #Else, return the neighboring cell which is at the index calculated by the lambda function
         return self.grid[find_index(row,col)]
+    def print_graph(self):
+        for key in self.graph:
+            print()
+            key.print_cell()
+            print("__")
+            for value in self.graph[key]:
+                value.print_cell()
+        print(self.graph.items())

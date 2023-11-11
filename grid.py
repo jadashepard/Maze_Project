@@ -2,6 +2,7 @@ import random
 class Cell:
     def __init__(self, row: int, col: int):
         self.row, self.col = row, col
+        self.cell_id = 0
         self.walls = {'top': True, 'right': True, 'bottom': True, 'left': True}
         self.neighbors = [] #neighbors is a list of tuples with the format (Cell, weight:int)
         self.visited = False
@@ -11,9 +12,12 @@ class Cell:
             if not neighbor[0].visited:
                 unvisited.append(neighbor[0])
         return unvisited[random.randint(0, len(unvisited) - 1)] if unvisited else False
-
+    def sort_neighbors(self):
+        #sort the neighbors list of the cell in ascending order by weight
+        self.neighbors = sorted(self.neighbors, key=lambda item: item[1])
     def print_cell(self):
-        print(self.row, self.col)
+        cell_string = str(self.row) + ',' + str(self.col)
+        return cell_string
 
 class Grid:
     def __init__(self, num_rows: int, num_cols: int):

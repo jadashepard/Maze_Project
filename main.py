@@ -1,5 +1,43 @@
 import pygame
+import random
 from grid import Grid
+
+class Edge:
+    def __init__(self, source, dest) -> None:
+        self.source = source
+        self.dest = dest
+        self.weight = random.randint(1, 1000)
+class KruskalMST:
+    def __init__(self, grid) -> None:
+        #Initializing Kruskal's Algorithm for Maze generation
+        self.edges_list = []
+        self.parent_list = []
+        self.numCells = 0
+        cell_id = 0
+
+        for cell in grid:
+            cell.cell_id = cell_id
+            self.numCells += 1
+            cell_id += 1
+            #Check if sorting function is correct
+            for neighbor in cell.neighbors:
+                edge = Edge(cell, neighbor[0])
+                self.edges_list.append(edge)
+        #Sort the list of edges in ascending order by weight
+        self.edges_list = sorted(self.edges_list, key=lambda item: item.weight)
+        #Initialize parent_list
+        i = 0
+        while (i < self.numCells):
+            self.parent_list.append(i)
+            i += 1
+        
+    def quickFind(self, id: int):
+        if(self.parent_list[id] == id):
+            return id
+        return self.quickFind(self.parent_list[id])
+    def quickUnion(self, source_id, dest_id):
+        self.parent_list[source_id] = dest_id
+
 class Maze:
     def __init__(self) -> None:
         pygame.init()
@@ -50,20 +88,15 @@ class Maze:
 #Main for running Maze Generator and Solver
 if __name__=="__main__":
     maze = Maze()
-    graph = maze.get_graph()
-    current_cell = list(graph.keys())[0]
-    stack = []
-    count = 1
-
-    kruskals_maze = []
-    for cell in graph:
-        for neighbor in graph[cell]:
-            kruskals_maze.append(neighbor)
-    kruskals_maze = sorted(kruskals_maze, key=lambda item: item[1])
+    grid = maze.get_grid()
+    kruskal = KruskalMST(grid)
+    kruskal_edges = kruskal.edges_list
     
-    for cell in kruskals_maze:
-        cell[0].print_cell()
-        print("weight = %d" % cell[1])
+    DFS = False
+    current_cell = grid[0]
+    stack = []
+    count = 0
+    i = 0
 
     #Main game loop
     exit = False
@@ -75,20 +108,40 @@ if __name__=="__main__":
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     exit = True
-        [maze.draw(cell) for cell in maze.get_grid()]
+        [maze.draw(cell) for cell in grid]
 
-        #Iterative backtracking of DFS
-        if count != len(maze.get_grid()):
-            current_cell.visited = True
-            maze.draw_current_cell(current_cell)
-            next_cell = current_cell.check_neighbors()
-            if next_cell:
-                stack.append(current_cell)
-                count += 1
-                maze.remove_walls(current_cell, next_cell)
-                next_cell.visited = True
-                current_cell = next_cell
-            elif stack:
-                current_cell = stack.pop()
+        if DFS:
+            #Iterative backtracking of DFS
+            if count != len(grid):
+                current_cell.visited = True
+                maze.draw_current_cell(current_cell)
+                next_cell = current_cell.check_neighbors()
+                if next_cell:
+                    stack.append(current_cell)
+                    count += 1
+                    maze.remove_walls(current_cell, next_cell)
+                    next_cell.visited = True
+                    current_cell = next_cell
+                elif stack:
+                    current_cell = stack.pop()
+        else:
+            #Kruskal's Algorithm
+            if count != (len(grid) - 1):
+                edge = kruskal_edges[i]
+                current_cell = edge.source
+                current_cell.visited = True
+                maze.draw_current_cell(current_cell)
+                next_cell = edge.dest
+                source_id = kruskal.quickFind(current_cell.cell_id)
+                dest_id = kruskal.quickFind(next_cell.cell_id)
+                
+                #If the parent/root of the current cell and the next cell are not the same, add this edge
+                if source_id != dest_id:
+                    stack.append(current_cell)
+                    maze.remove_walls(current_cell, next_cell)
+                    next_cell.visited = True
+                    kruskal.quickUnion(source_id, dest_id)
+                    count += 1
+                i += 1
         pygame.display.flip()
         clock.tick(10)

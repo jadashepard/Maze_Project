@@ -2,6 +2,7 @@ import random
 class Cell:
     def __init__(self, row: int, col: int):
         self.row, self.col = row, col
+        self.cell_id = 0
         self.walls = {'top': True, 'right': True, 'bottom': True, 'left': True}
         self.neighbors = []
         self.visited = False
@@ -11,9 +12,9 @@ class Cell:
             if not neighbor.visited:
                 unvisited.append(neighbor)
         return unvisited[random.randint(0, len(unvisited) - 1)] if unvisited else False
-
     def print_cell(self):
-        print(self.row, self.col)
+        cell_string = str(self.row) + ',' + str(self.col)
+        return cell_string
 
 class Grid:
     def __init__(self, num_rows: int, num_cols: int):
@@ -35,6 +36,9 @@ class Grid:
             bottom = self.check_cell(cell.row + 1, cell.col)
             right = self.check_cell(cell.row, cell.col + 1)
             top = self.check_cell(cell.row - 1, cell.col)
+            #If the cell is a top, right, bottom, or left neighbor it added to the list as a tuple
+            #with the first index being the cell and the second index being a random integer to act as the weight of the edge
+            #tuple (Cell, weight:int)
             if top:
                 cell.neighbors.append(top)
             if right:
@@ -62,3 +66,11 @@ class Grid:
             return False
         #Else, return the neighboring cell which is at the index calculated by the lambda function
         return self.grid[find_index(row,col)]
+    def print_graph(self):
+        for key in self.graph:
+            print()
+            key.print_cell()
+            print("__")
+            for value in self.graph[key]:
+                value.print_cell()
+        print(self.graph.items())

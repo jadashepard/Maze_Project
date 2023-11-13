@@ -4,17 +4,14 @@ class Cell:
         self.row, self.col = row, col
         self.cell_id = 0
         self.walls = {'top': True, 'right': True, 'bottom': True, 'left': True}
-        self.neighbors = [] #neighbors is a list of tuples with the format (Cell, weight:int)
+        self.neighbors = []
         self.visited = False
     def check_neighbors(self):
         unvisited = []
         for neighbor in self.neighbors:
-            if not neighbor[0].visited:
-                unvisited.append(neighbor[0])
+            if not neighbor.visited:
+                unvisited.append(neighbor)
         return unvisited[random.randint(0, len(unvisited) - 1)] if unvisited else False
-    def sort_neighbors(self):
-        #sort the neighbors list of the cell in ascending order by weight
-        self.neighbors = sorted(self.neighbors, key=lambda item: item[1])
     def print_cell(self):
         cell_string = str(self.row) + ',' + str(self.col)
         return cell_string
@@ -43,13 +40,13 @@ class Grid:
             #with the first index being the cell and the second index being a random integer to act as the weight of the edge
             #tuple (Cell, weight:int)
             if top:
-                cell.neighbors.append((top, random.randint(1, self.rows * self.cols)))
+                cell.neighbors.append(top)
             if right:
-                cell.neighbors.append((right, random.randint(1, self.rows * self.cols)))
+                cell.neighbors.append(right)
             if bottom:
-                cell.neighbors.append((bottom, random.randint(1, self.rows * self.cols)))
+                cell.neighbors.append(bottom)
             if left:
-                cell.neighbors.append((left, random.randint(1, self.rows * self.cols)))
+                cell.neighbors.append(left)
     #Helper method for algorithm analysis
     def edges_count(self):
         vertices = 0

@@ -2,6 +2,7 @@ import pygame
 import random
 from grid import Grid
 
+#Helper class to create Edge object for Kruskal's algorithm
 class Edge:
     def __init__(self, source, dest) -> None:
         self.source = source
@@ -21,16 +22,17 @@ class KruskalMST:
             cell_id += 1
             #Check if sorting function is correct
             for neighbor in cell.neighbors:
-                edge = Edge(cell, neighbor[0])
+                edge = Edge(cell, neighbor)
                 self.edges_list.append(edge)
+
         #Sort the list of edges in ascending order by weight
         self.edges_list = sorted(self.edges_list, key=lambda item: item.weight)
+        
         #Initialize parent_list
         i = 0
         while (i < self.numCells):
             self.parent_list.append(i)
             i += 1
-        
     def quickFind(self, id: int):
         if(self.parent_list[id] == id):
             return id
@@ -80,8 +82,6 @@ class Maze:
         elif y_distance == -1:
             current.walls['bottom'] = False
             next.walls['top'] = False
-    def get_graph(self):
-        return self.maze.graph
     def get_grid(self):
         return self.maze.grid
 
@@ -89,6 +89,9 @@ class Maze:
 if __name__=="__main__":
     maze = Maze()
     grid = maze.get_grid()
+
+    #Kruskal's alorithm functions using edges. All edges in the grid are added to the list
+    #and sorted in ascending order by their weights
     kruskal = KruskalMST(grid)
     kruskal_edges = kruskal.edges_list
     

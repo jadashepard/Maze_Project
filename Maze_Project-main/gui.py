@@ -4,6 +4,8 @@ import PySimpleGUI as sg
 
 names = []
 names2 = []
+names3 = []
+names4 = []
 lst = sg.Listbox(names, size=(20, 4), expand_y=True, enable_events=True, key='-LIST-')
 layout = [[sg.Input(size=(5, 1), expand_x=True, key='-INPUT-'),
    sg.Button('Select'),
@@ -12,14 +14,15 @@ layout = [[sg.Input(size=(5, 1), expand_x=True, key='-INPUT-'),
    [sg.Text("Please add a grid size", key='-MSG-', font=('Arial Bold', 14), justification='center')]
 ]
 
-l1 = ['DFS', 'Kruskal']
-layout2 = [[sg.Listbox(l1, size = (20, 10)),
-sg.Button('Next')]
-]
-
-l2 = ['BFS','Dijkstra']
-layout3 = [[sg.Listbox(l2, size = (20, 10)),
-sg.Button('Run Selected')]
+lst2 = sg.Text('Please select BFS or Djikstra for maze traversal', size=(10, 10), expand_y=True, enable_events=True, key='-LIST-')
+layout2 = [[sg.Input(size=(1, 1), expand_x=True, key='-INPUT-'),
+    sg.Button('DFS'),
+    sg.Button('Kruskal'),
+    [lst2],
+    sg.Button('BFS'),
+    sg.Button('Djikstra'),
+    sg.Button('Next')],
+[sg.Text("Please select DFS or Kruskal for maze generation", key='-MSG-', font=('Arial Bold', 14), justification='center')]
 ]
 
 
@@ -51,24 +54,22 @@ while True:
             if event in (sg.WIN_CLOSED, 'Exit'):
                 break
             if event == 'DFS':
-                []
+                names3 = []
+                names3.append('DFS')
             if event == 'Kruskal':
-                []
+                names3 = []
+                names3.append('Kruskal')
+            if event == 'BFS':
+                names4 = []
+                names4.append('BFS')
+            if event == 'Djikstra':
+                names4 = []
+                names4.append('Djikstra')
+
             if event == 'Next':
-                #3rd gui opens here
-                window = sg.Window('Please select method of maze traversal', layout3, size=(500, 200))
-                while True:
-                    event, values = window.read()
-                    if event in (sg.WIN_CLOSED, 'Exit'):
-                        break
-                    if event == 'BFS':
-                        []
-                    if event == 'Dijkstra':
-                        []
-                    if event == 'Run Selected':
-                       window.close()
+
                     window.close()
-            window.close()
+
 
       else: window['-MSG-'].update('Invalid Input, will default to 10')
 

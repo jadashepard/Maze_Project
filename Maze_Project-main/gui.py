@@ -26,13 +26,16 @@ window = sg.Window('Please Enter row height and width of maze as 1 number', layo
 names2 = ["10"]
 while True:
    event, values = window.read()
-   print(lst.get())
    if event in (sg.WIN_CLOSED, 'Exit'):
       break
    if event == 'Add':
-      names.append(values['-INPUT-'])
-      window['-LIST-'].update(names)
-      msg = "A new grid size added for selection : {}".format(values['-INPUT-'])
+
+      if values['-INPUT-'] == '9' or values['-INPUT-'] == '8' or values['-INPUT-'] == '7' or values['-INPUT-'] == '6' or values['-INPUT-'] == '5' or values['-INPUT-'] == '4' or values['-INPUT-'] == '3' or values['-INPUT-'] == '2':
+           names.append(values['-INPUT-'])
+           window['-LIST-'].update(names)
+           msg = "A new grid size added for selection : {}".format(values['-INPUT-'])
+      else: msg = "invalid"
+
       window['-MSG-'].update(msg)
    if event == 'Select':
       names2 = ['10']
